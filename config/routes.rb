@@ -13,20 +13,6 @@ Rails.application.routes.draw do
     end
   end
 
-  authenticate :user, ->(u) { u.super_admin? } do
-    mount Sidekiq::Web, at: "/sidekiq"
-
-    ActiveAdmin.routes(self)
-    namespace :superadmin do
-      root to: "users#index"
-      resources :users
-    end
-  end
-
-  authenticate :user, ->(u) { !u.super_admin? } do
-    get "/active_admin" => redirect("/")
-  end
-
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       devise_scope :user do
@@ -44,5 +30,5 @@ Rails.application.routes.draw do
   end
 
   root "home#index"
-  get '*path', to: 'home#index', via: :all
+  get "*path", to: "home#index", via: :all
 end

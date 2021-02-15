@@ -18,7 +18,7 @@ class Api::V1::NotesController < Api::V1::BaseController
   end
 
   def bulk_delete
-    notes = Note.where(id: params[:ids], user: current_user)
+    notes = current_user.notes.where(id: params[:ids])
     if notes.empty?
       render json: { error: "No users found with those IDs" }, status: 422
     else

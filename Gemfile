@@ -38,9 +38,6 @@ gem "font-awesome-sass"
 # Support cross-browser css compatibilty
 gem "autoprefixer-rails"
 
-# Admin framework
-gem "activeadmin"
-
 # Email validation
 gem "email_validator"
 
@@ -102,4 +99,10 @@ group :test do
 
   # Minitest reporter plugin for CircleCI.
   gem "minitest-ci"
+
+  # for generating random meaningful data
+  gem "faker"
+
+  # Replacement for fixtures
+  gem "factory_bot_rails"
 end

@@ -4,7 +4,7 @@ require "test_helper"
 
 class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   def test_show_for_a_valid_user
-    admin = users(:admin)
+    admin = create :user, :admin
 
     get api_v1_user_url(admin), params: { format: :json },
         headers: headers(admin)
@@ -15,7 +15,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_show_when_email_is_not_present
-    admin = users :admin
+    admin = create :user, :admin
     an_invalid_email = { "X-Auth-Email" => "this_email_is_not_present_in_db@example.com" }
 
     get api_v1_user_url(admin), params: { format: :json },
@@ -65,7 +65,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_update_should_not_succeed_without_authentication
-    admin = users :admin
+    admin = create :user, :admin
     json_data = admin.as_json
 
     put api_v1_user_url(admin.email), params: { id: admin.email, user: json_data, format: :json }
@@ -74,7 +74,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_update_should_return_error_when_email_is_not_present
-    admin = users(:admin)
+    admin = create :user, :admin
     an_invalid_email = { "X-Auth-Email" => "this_email_is_not_present_in_db@example.com" }
 
     put api_v1_user_url(admin), params: { format: :json },
@@ -86,7 +86,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_update_user_should_succeed_for_valid_data
-    admin = users(:admin)
+    admin = create :user, :admin
     new_first_name = "John2"
 
     put api_v1_user_url(admin), params: { format: :json,
@@ -99,7 +99,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_update_user_should_return_error_for_invalid_data
-    admin = users(:admin)
+    admin = create :user, :admin
 
     put api_v1_user_url(admin), params: { format: :json,
                                           user: { password: "new test password",
@@ -114,7 +114,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_destroy_should_not_be_invokable_without_authentication
-    admin = users :admin
+    admin = create :user, :admin
 
     delete api_v1_user_url(admin.email), params: { id: admin.email, format: :json }
 
@@ -124,7 +124,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_destroy_should_destroy_user
-    admin = users :admin
+    admin = create :user, :admin
 
     assert_difference "User.count", -1 do
       delete api_v1_user_url(admin), params: { format: :json },
@@ -135,7 +135,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_destroy_should_return_error_if_email_is_not_present_in_database
-    admin = users :admin
+    admin = create :user, :admin
     email = { "X-Auth-Email" => "this_email_is_not_present_in_db@example.com" }
 
     delete api_v1_user_url(admin), params: { format: :json }, headers: headers(admin, email)

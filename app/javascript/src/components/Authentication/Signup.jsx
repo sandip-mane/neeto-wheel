@@ -35,7 +35,7 @@ const Signup = ({ history }) => {
       });
       authDispatch({
         type: "LOGIN",
-        payload: { auth_token, email, is_admin: false },
+        payload: { auth_token, email },
       });
       userDispatch({ type: "SET_USER", payload: { user } });
       history.push("/");

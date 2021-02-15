@@ -44,8 +44,7 @@ end
 def create_user!(options = {})
   user_attributes = { password: "welcome",
                       first_name: "Oliver",
-                      last_name: "Smith",
-                      role: "super_admin" }
+                      last_name: "Smith" }
   attributes = user_attributes.merge options
   User.create! attributes
 end

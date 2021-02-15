@@ -21,9 +21,9 @@ const Login = ({ history }) => {
     try {
       setLoading(true);
       const {
-        data: { auth_token, user, is_admin },
+        data: { auth_token, user },
       } = await authenticationApi.login({ user: { email, password } });
-      authDispatch({ type: "LOGIN", payload: { auth_token, email, is_admin } });
+      authDispatch({ type: "LOGIN", payload: { auth_token, email } });
       userDispatch({ type: "SET_USER", payload: { user } });
       setAuthHeaders();
       history.push("/");

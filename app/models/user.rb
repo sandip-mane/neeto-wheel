@@ -17,10 +17,6 @@ class User < ApplicationRecord
     [first_name, last_name].join(" ").strip
   end
 
-  def super_admin?
-    role == "super_admin"
-  end
-
   def as_json(options = {})
     new_options = options.merge(only: [:email, :first_name, :last_name, :current_sign_in_at])
 

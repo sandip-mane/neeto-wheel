@@ -4,9 +4,10 @@ require "test_helper"
 
 class Api::V1::NotesControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @admin = users(:admin)
+    @admin = create :user, :admin
     @headers = headers(@admin)
   end
+
   def test_list_all_notes_for_a_user
     get api_v1_notes_url, headers: @headers
 
@@ -50,25 +51,24 @@ class Api::V1::NotesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_delete_single_note
-    initial_notes_count = @admin.notes.size
-    milk = notes(:milk)
+    milk = create :note, user: @admin
 
-    post bulk_delete_api_v1_notes_path, params: { ids: [milk.id] },
-        headers: @headers
+    assert_difference "@admin.notes.count", -1 do
+      post bulk_delete_api_v1_notes_path, params: { ids: [milk.id] }, headers: @headers
+    end
+
     assert_response :success
-    assert_equal @admin.notes.size, initial_notes_count-1
   end
 
   def test_delete_multiple_note
-    initial_notes_count = @admin.notes.size
-    milk = notes(:milk)
-    bulbs = notes(:bulbs)
-    rent = notes(:rent)
+    milk  = create :note, user: @admin
+    bulbs = create :note, :bulbs, user: @admin
+    rent  = create :note, :rent, user: @admin
 
-    post bulk_delete_api_v1_notes_path, params: { ids: [milk.id, bulbs.id, rent.id] },
-        headers: @headers
+    assert_difference "@admin.notes.count", -3 do
+      post bulk_delete_api_v1_notes_path, params: { ids: [milk.id, bulbs.id, rent.id] }, headers: @headers
+    end
     assert_response :success
-    assert_equal @admin.notes.size, initial_notes_count-3
   end
 
   def test_delete_invalid_id
