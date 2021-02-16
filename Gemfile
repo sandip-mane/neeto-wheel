@@ -57,6 +57,9 @@ gem 'bootsnap', '>= 1.4.2', require: false
 # Background jobs
 gem "sidekiq"
 
+# authentication for oauth using doorkeeper
+gem "omniauth-oauth2", "~> 1.6"
+
 group :development do
   # speeds up development by keeping your application running in the background
   gem "spring"
