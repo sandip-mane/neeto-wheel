@@ -88,6 +88,9 @@ group :development do
 
   # vulnerabity checker for Ruby itself.
   gem "ruby_audit", require: false
+
+  # Pretty print in development
+  gem "awesome_print", "1.8.0"
 end
 
 group :test do

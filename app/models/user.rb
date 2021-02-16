@@ -3,15 +3,21 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :trackable, :validatable, :rememberable
-
-  has_many :notes, dependent: :delete_all
+  devise  :database_authenticatable,
+          :registerable,
+          :recoverable,
+          :trackable,
+          :rememberable
 
   before_save :ensure_authentication_token_is_present
 
-  validates :first_name, :last_name, :email, presence: true
-  validates :email, uniqueness: true
+  validates :first_name, :last_name, presence: true
+
+  validates_uniqueness_of :email, allow_blank: true, case_sensitive: false, scope: :organization_id
+
+  belongs_to :organization
+
+  has_many :notes, dependent: :delete_all
 
   def name
     [first_name, last_name].join(" ").strip
@@ -21,6 +27,14 @@ class User < ApplicationRecord
     new_options = options.merge(only: [:email, :first_name, :last_name, :current_sign_in_at])
 
     super new_options
+  end
+
+  def self.current
+    Thread.current[:user]
+  end
+
+  def self.current=(user)
+    Thread.current[:user] = user
   end
 
   private

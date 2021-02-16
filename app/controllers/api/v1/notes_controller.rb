@@ -4,12 +4,13 @@ class Api::V1::NotesController < Api::V1::BaseController
   before_action :load_note, only: [:show, :delete]
 
   def index
-    notes = current_user.notes
+    notes = @organization.notes
     render json: notes
   end
 
   def create
-    @note = Note.new(note_params.merge(user: current_user))
+    @note = @organization.notes.new note_params
+    @note.user = current_user
     if @note.save
       render json: { note: @note, notice: "#{@note.title.humanize} has been added to your notes!" }
     else
@@ -18,7 +19,7 @@ class Api::V1::NotesController < Api::V1::BaseController
   end
 
   def bulk_delete
-    notes = current_user.notes.where(id: params[:ids])
+    notes = @organization.notes.where(id: params[:ids])
     if notes.empty?
       render json: { error: "No users found with those IDs" }, status: 422
     else
@@ -35,6 +36,6 @@ class Api::V1::NotesController < Api::V1::BaseController
     end
 
     def load_note
-      @note = Note.find(params[:id])
+      @note = @organization.notes.find(params[:id])
     end
 end

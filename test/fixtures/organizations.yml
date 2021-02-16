@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  subdomain: MyString
+  google_login_enabled: false
+  active: false
+  auth_app_url: MyString
+  auth_app_id: MyString
+  auth_app_secret: MyString
+
+two:
+  name: MyString
+  subdomain: MyString
+  google_login_enabled: false
+  active: false
+  auth_app_url: MyString
+  auth_app_id: MyString
+  auth_app_secret: MyString

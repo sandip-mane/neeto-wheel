@@ -3,7 +3,8 @@ class CreateNotes < ActiveRecord::Migration[6.0]
     create_table :notes, id: :uuid do |t|
       t.string      :title
       t.string      :description
-      t.references  :user, type: :uuid
+      t.references  :user,          type: :uuid
+      t.references  :organization,  type: :uuid
 
       t.timestamps
     end

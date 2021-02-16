@@ -21,16 +21,26 @@ class AddDeviseToUsers < ActiveRecord::Migration[6.0]
       t.string   :current_sign_in_ip
       t.string   :last_sign_in_ip
 
-      # Custom attributes
-      t.string :first_name
-      t.string :last_name
-      t.string :role, default: "standard"
-      t.string :authentication_token
-
       t.timestamps
+
+      # Custom attributes
+      t.string      :first_name
+      t.string      :last_name
+      t.string      :role, default: "standard"
+      t.string      :authentication_token
+      t.datetime    :last_invitation_sent_at
+      t.references  :organization, null: false, type: :uuid, foreign_key: true
+
+      # SSO attributes
+      t.string  :profile_image_url
+      t.string  :provider
+      t.string  :uid
+      t.string  :doorkeeper_access_token
+      t.string  :doorkeeper_refresh_token
+      t.integer :doorkeeper_token_expires_at
     end
 
-    add_index :users, :email,                unique: true
+    add_index :users, :email
     add_index :users, :reset_password_token, unique: true
     # add_index :users, :confirmation_token,   :unique => true
     # add_index :users, :unlock_token,         :unique => true
