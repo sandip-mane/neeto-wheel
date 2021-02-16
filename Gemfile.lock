@@ -290,7 +290,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   bullet
   bundler-audit
-  devise (~> 4.7)
+  devise (>= 4.7.1)
   email_prefixer
   email_validator
   factory_bot_rails

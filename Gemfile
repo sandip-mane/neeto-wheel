@@ -27,7 +27,7 @@ gem "puma"
 gem "jbuilder", ">= 2.7"
 
 # Authentication
-gem "devise", "~> 4.7"
+gem "devise", ">= 4.7.1"
 
 # Error tracking
 gem "honeybadger"
@@ -51,16 +51,11 @@ gem "mail_interceptor", group: [:development, :staging, :heroku]
 # Adds prefix to subject in emails
 gem "email_prefixer"
 
-# Display notifications
-
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
 # Background jobs
 gem "sidekiq"
-
-# Preview email in browser
-gem "letter_opener", group: :development
 
 group :development do
   # speeds up development by keeping your application running in the background
@@ -89,8 +84,11 @@ group :development do
   # vulnerabity checker for Ruby itself.
   gem "ruby_audit", require: false
 
-  # Pretty print in development
+  # Pretty print objects
   gem "awesome_print", "1.8.0"
+
+  # Preview email in browser
+  gem "letter_opener"
 end
 
 group :test do

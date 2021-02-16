@@ -4,6 +4,8 @@ class SampleDataSeederService
   ORGANIZATIONS = ["Spinkart"]
 
   def process
+    create_app_organization
+
     ORGANIZATIONS.each do |org_name|
       org     = create_organization(org_name)
       oliver  = create_oliver(org)
@@ -26,7 +28,17 @@ class SampleDataSeederService
     end
 
     def create_user(options = {})
-      ap options
       User.create! options.merge({ password: "welcome" })
+    end
+
+    def create_app_organization
+      auth_app = Rails.application.secrets.auth_app
+
+      Organization.create! \
+        name:             "App",
+        subdomain:        "app",
+        auth_app_url:     auth_app[:url],
+        auth_app_id:      auth_app[:id],
+        auth_app_secret:  auth_app[:secret]
     end
 end

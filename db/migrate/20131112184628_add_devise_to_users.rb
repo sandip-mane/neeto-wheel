@@ -32,15 +32,17 @@ class AddDeviseToUsers < ActiveRecord::Migration[6.0]
       t.references  :organization, null: false, type: :uuid, foreign_key: true
 
       # SSO attributes
-      t.string  :profile_image_url
+      t.string  :time_zone, default: 'UTC'
       t.string  :provider
       t.string  :uid
       t.string  :doorkeeper_access_token
       t.string  :doorkeeper_refresh_token
       t.integer :doorkeeper_token_expires_at
+      t.string  :profile_image_url
+      t.string  :date_format
     end
 
-    add_index :users, :email
+    add_index :users, %i[email organization_id], unique: true
     add_index :users, :reset_password_token, unique: true
     # add_index :users, :confirmation_token,   :unique => true
     # add_index :users, :unlock_token,         :unique => true

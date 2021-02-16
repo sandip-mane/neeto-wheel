@@ -3,15 +3,30 @@
 require "sidekiq/web"
 
 Rails.application.routes.draw do
-
-  devise_for :users, path_prefix: "devise", controllers: { registrations: "registrations" }
-  get "/logout" => "sessions#destroy", :as => :logout
-  devise_scope :user do
-    scope "my" do
-      put "profile/update", to: "registrations#update"
-      put "password/update", to: "registrations#update_password"
+  namespace :api do
+    namespace :v1 do
+      namespace :server do
+        resources :organizations, only: [:create]
+        resource :profile, only: [:update]
+        resource :change_email, only: [:update]
+      end
     end
   end
+
+  devise_scope :user do
+    get 'login', to: 'users/sessions#new'
+    get 'logout', controller: 'users/sessions', action: 'destroy', as: :logout
+  end
+
+  namespace :auth do
+    resource :profile, only: [:edit]
+    resource :change_password, only: [:new]
+    resource :change_email, only: [:new]
+
+    get :chain, to: 'chain_authentications#index'
+  end
+
+  devise_for :users, path_prefix: "devise", controllers: { registrations: "registrations" }
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do

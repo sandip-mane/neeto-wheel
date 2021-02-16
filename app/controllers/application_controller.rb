@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   include LoadOrganization
+  include SSOHelpers
   include LoadUser
 
   protect_from_forgery with: :exception
